@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "769554029335",
+    "project_id": "kecgo-6a20d",
+    "storage_bucket": "kecgo-6a20d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769554029335:android:c36af9e98ff7f1ff6db552",
+        "android_client_info": {
+          "package_name": "com.example.kecapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjKsSme74LexaY5o5xSkrRVybtotxqIiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
