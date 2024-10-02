@@ -25,7 +25,7 @@ class ProfilePage extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
               // Profile picture
-              Center(
+              const Center(
                 child: CircleAvatar(
                   radius: 60,
                   backgroundImage: NetworkImage(
@@ -36,9 +36,9 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(height: 20),
 
               // User information
-              Text(
+              const Text(
                 'John Doe',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),

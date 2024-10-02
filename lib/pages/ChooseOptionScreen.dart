@@ -4,15 +4,17 @@ import 'bottom_nav.dart';
 import 'fcnav.dart';
 
 class ChooseOptionScreen extends StatelessWidget {
+  const ChooseOptionScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('KECGo!'),
+        title: const Text('KECGo!'),
         automaticallyImplyLeading: false, // Removes the back button
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Color.fromARGB(255, 13, 151, 161), // Start color
@@ -34,7 +36,7 @@ class ChooseOptionScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BottomNav()),
+                      MaterialPageRoute(builder: (context) => const BottomNav()),
                     );
                   },
                   child: SizedBox(
@@ -44,7 +46,7 @@ class ChooseOptionScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.blue.shade50,
                         borderRadius: BorderRadius.circular(20.0),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black26,
                             blurRadius: 10,
@@ -52,6 +54,7 @@ class ChooseOptionScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                      padding: const EdgeInsets.all(20.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -66,17 +69,16 @@ class ChooseOptionScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      padding: EdgeInsets.all(20.0),
                     ),
                   ),
                 ),
-                SizedBox(height: 40.0),
+                const SizedBox(height: 40.0),
                 // KEC Foodcourt Option
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Fcnav()),
+                      MaterialPageRoute(builder: (context) => const Fcnav()),
                     );
                   },
                   child: SizedBox(
@@ -86,7 +88,7 @@ class ChooseOptionScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.blue.shade50,
                         borderRadius: BorderRadius.circular(20.0),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black26,
                             blurRadius: 10,
@@ -94,6 +96,7 @@ class ChooseOptionScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                      padding: const EdgeInsets.all(20.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -108,7 +111,6 @@ class ChooseOptionScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      padding: EdgeInsets.all(20.0),
                     ),
                   ),
                 ),

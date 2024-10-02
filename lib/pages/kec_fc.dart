@@ -160,7 +160,7 @@ class KecFcScreen extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             productTitle[index],
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
           Text(
@@ -171,7 +171,7 @@ class KecFcScreen extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             productPrice[index],
-            style: TextStyle(color: Colors.blue, fontSize: 16),
+            style: const TextStyle(color: Colors.blue, fontSize: 16),
           ),
           const SizedBox(height: 5),
           const Row(

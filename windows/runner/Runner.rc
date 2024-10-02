@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "kecapp" "\0"
+            VALUE "FileDescription", "product_expo" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "kecapp" "\0"
+            VALUE "InternalName", "product_expo" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "kecapp.exe" "\0"
-            VALUE "ProductName", "kecapp" "\0"
+            VALUE "OriginalFilename", "product_expo.exe" "\0"
+            VALUE "ProductName", "product_expo" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

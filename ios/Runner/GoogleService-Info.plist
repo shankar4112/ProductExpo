@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyAsgHQPaMa6oGLQk704ZJQEwRRdOBsJcIo</string>
+	<string>AIzaSyCyctqu31hExvwIa5KWlaREvwxCvUKK7k8</string>
 	<key>GCM_SENDER_ID</key>
-	<string>481804233794</string>
+	<string>594600361631</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.kecapp</string>
+	<string>com.example.productExpo</string>
 	<key>PROJECT_ID</key>
-	<string>kecgo-9fdb3</string>
+	<string>loginsignup-59e5c</string>
 	<key>STORAGE_BUCKET</key>
-	<string>kecgo-9fdb3.appspot.com</string>
+	<string>loginsignup-59e5c.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:481804233794:ios:c13a54531ec89bb88611db</string>
+	<string>1:594600361631:ios:264bb89f7757853d596caa</string>
 </dict>
 </plist>

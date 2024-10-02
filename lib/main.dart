@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:kecapp/pages/login.dart'; // Import LoginPage here
+// import 'package:kecapp/pages/login.dart'; // Import LoginPage here
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'pages/intro.dart'; // Import the Onboarding screen
+import 'LoginSignup/Screen/login.dart';
 // import 'pages
 //
 //
@@ -16,6 +17,8 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -48,9 +51,9 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'Montserrat',
       ),
       // Show either the onboarding screen (if not seen) or login/main screen
-      home: _seenOnboarding ? LoginPage() : OnboardingScreen(),
+      home: _seenOnboarding ? LoginScreen() : OnboardingScreen(),
       routes: {
-        '/login': (context) => LoginPage(), // Add the login page route
+        '/login': (context) => LoginScreen(), // Add the login page route
         '/chooseOption': (context) =>
             ChooseOptionScreen(), // Add the bottom navigation or main page route
       },

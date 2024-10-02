@@ -1,6 +1,6 @@
 {
-    "name": "kecapp",
-    "short_name": "kecapp",
+    "name": "product_expo",
+    "short_name": "product_expo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

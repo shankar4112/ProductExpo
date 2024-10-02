@@ -345,98 +345,54 @@ class _HomePageState extends State<HomePage> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: 400, // Adjusted height to accommodate the button and padding
-        padding: const EdgeInsets.all(16.0), // Added padding
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20.0)), // Rounded corners
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2), // Subtle shadow effect
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, -3), // Changes position of shadow
-            ),
-          ],
-        ),
+        height: 350, // Increased height to accommodate the button
+        color: Colors.white,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Your Cart',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10), // Space between title and list
             Expanded(
               child: ListView.builder(
                 itemCount: cartItems.length,
                 itemBuilder: (context, index) {
                   final item = cartItems[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0), // Space between items
-                    child: ListTile(
-                      title: Text(
-                        item.title,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.remove_circle_outline),
-                            onPressed: () {
-                              removeFromCart(item.title);
-                            },
-                            color: Colors.red, // Decrease button color
-                          ),
-                          Text(
-                            'Quantity: ${item.quantity}',
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.add_circle_outline),
-                            onPressed: () {
-                              addToCart(item.title, item.price);
-                            },
-                            color: Colors.green, // Increase button color
-                          ),
-                        ],
-                      ),
-                      trailing: Text(
-                        'Rs.${item.price * item.quantity}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
+                  return ListTile(
+                    title: Text(item.title),
+                    subtitle: Row(
+                      children: [
+                        // Decrease quantity button
+                        IconButton(
+                          icon: const Icon(Icons.remove_circle_outline),
+                          onPressed: () {
+                            removeFromCart(item.title);
+                          },
+                        ),
+                        // Display current quantity
+                        Text('Quantity: ${item.quantity}'),
+                        // Increase quantity button
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline),
+                          onPressed: () {
+                            addToCart(item.title, item.price);
+                          },
+                        ),
+                      ],
                     ),
+                    trailing: Text('Rs.${item.price * item.quantity}'),
                   );
                 },
               ),
             ),
-            const SizedBox(height: 10), // Space above the button
-            Center(
-              // Center the button
-              child: ElevatedButton(
-                onPressed: () {
-                  proceedToCheckout();
-                },
-                child: const Text('Proceed to Checkout'),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.blue,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16.0), // Text color
-                  textStyle: const TextStyle(fontSize: 18), // Button text style
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(10.0), // Rounded button corners
-                  ),
-                ),
-              ),
+            // Proceed to Checkout button
+            ElevatedButton(
+              onPressed: () {
+                // Handle the checkout process here
+                // For example, navigate to a checkout page or show a confirmation dialog
+                proceedToCheckout();
+              },
+              child: const Text('Proceed to Checkout'),
             ),
           ],
         ),
@@ -446,46 +402,25 @@ class _HomePageState extends State<HomePage> {
 
 // Function to handle checkout
   void proceedToCheckout() {
-    if (cartItems.isEmpty) {
-      // Show an alert if the cart is empty
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Cart Empty'),
-            content: const Text(
-                'Your cart is empty. Please add items to your cart before proceeding to checkout.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      // Proceed with checkout logic if the cart is not empty
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Checkout'),
-            content: const Text('Proceeding to checkout...'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    // You can implement your checkout logic here
+    // For example, show a dialog or navigate to another screen
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Checkout'),
+          content: const Text('Proceeding to checkout...'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget buildFavoritesView() {
