@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 // import 'kec_amenity.dart'; // Import the KEC Amenity screen
-import 'bottom_nav.dart';
+import '../HomePage/bottom_nav.dart';
 import 'fcnav.dart';
 
 class ChooseOptionScreen extends StatelessWidget {
-  const ChooseOptionScreen({super.key});
+  final Map<String, dynamic>? user; // Add a parameter for user data
+
+  const ChooseOptionScreen({super.key, this.user}); // Update the constructor
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,9 @@ class ChooseOptionScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const BottomNav()),
+                      MaterialPageRoute(
+                        builder: (context) => BottomNav(user: user), // Pass user data
+                      ),
                     );
                   },
                   child: SizedBox(
@@ -59,8 +63,8 @@ class ChooseOptionScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset('assets/kec_amenity.png', height: 120),
-                          SizedBox(height: 10),
-                          Text(
+                          const SizedBox(height: 10),
+                          const Text(
                             'KEC Amenity',
                             style: TextStyle(
                               fontSize: 20.0,
@@ -101,8 +105,8 @@ class ChooseOptionScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset('assets/kec_foodcourt.png', height: 120),
-                          SizedBox(height: 10),
-                          Text(
+                          const SizedBox(height: 10),
+                          const Text(
                             'KEC Foodcourt',
                             style: TextStyle(
                               fontSize: 20.0,

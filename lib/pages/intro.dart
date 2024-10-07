@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
@@ -52,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     onPressed: () {
                       _pageController.jumpToPage(totalPages - 1);
                     },
-                    child: Text("Skip"),
+                    child: const Text("Skip"),
                   )
                 : Container(),
           ),
@@ -62,7 +64,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: Row(
               children: List.generate(totalPages, (index) {
                 return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 4.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
                   width: 8.0,
                   height: 8.0,
                   decoration: BoxDecoration(
@@ -80,7 +82,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onPressed: () {
                 if (_currentPage < totalPages - 1) {
                   _pageController.nextPage(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
                 } else {
@@ -113,16 +115,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(image, height: 250),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           Text(
             title,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             content,
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
             textAlign: TextAlign.center,
           ),
         ],

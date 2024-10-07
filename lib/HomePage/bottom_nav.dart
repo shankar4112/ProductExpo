@@ -1,12 +1,15 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'order.dart';
-import 'profile.dart';
-import 'wallet.dart';
+// import '../pages/home.dart';
+import '../pages/order.dart';
+import '../pages/profile.dart';
+import '../pages/wallet.dart';
+import 'home_page.dart';
 
 class BottomNav extends StatefulWidget {
-  const BottomNav({super.key});
+  final Map<String, dynamic>? user; // Add this line to accept user data
+
+  const BottomNav({super.key, this.user});
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -24,13 +27,13 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   void initState() {
-    homepage = const HomePage();
-    order = const OrderPage();
-    profile = const ProfilePage();
+    super.initState();
+    homepage =  HomePage();
+    order = OrderPage();
+    profile = const ProfilePage(); // Pass user data here
     wallet = const WalletPage();
     pages = [homepage, order, wallet, profile];
     currentPage = homepage; // Initialize with the home page
-    super.initState();
   }
 
   @override

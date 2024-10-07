@@ -1,7 +1,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:product_expo/LoginWithGoogle/google_auth.dart';
+import '../../LoginWithGoogle/google_auth.dart';
 
 import '../Widget/button.dart';
 import 'login.dart';

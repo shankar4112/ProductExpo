@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -21,12 +23,12 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              const Color.fromARGB(255, 13, 151, 161),
-              const Color.fromARGB(255, 255, 255, 255),
-              const Color.fromARGB(255, 255, 255, 255)
+              Color.fromARGB(255, 13, 151, 161),
+              Color.fromARGB(255, 255, 255, 255),
+              Color.fromARGB(255, 255, 255, 255)
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -34,12 +36,12 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 30.0),
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text(
+                const Text(
                   'Signup to Your Account',
                   style: TextStyle(
                     fontSize: 28.0,
@@ -48,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 40.0),
+                const SizedBox(height: 40.0),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -57,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(30.0),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.black26,
                               blurRadius: 10,
@@ -67,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: TextFormField(
                           controller: _emailController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: 'Email',
                             prefixIcon: Icon(Icons.email),
                             border: InputBorder.none,
@@ -87,12 +89,12 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(30.0),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.black26,
                               blurRadius: 10,
@@ -104,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _passwordController,
                           decoration: InputDecoration(
                             hintText: 'Password',
-                            prefixIcon: Icon(Icons.lock),
+                            prefixIcon: const Icon(Icons.lock),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureText
                                   ? Icons.visibility
@@ -112,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: _togglePasswordVisibility,
                             ),
                             border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 vertical: 15.0, horizontal: 20.0),
                           ),
                           obscureText: _obscureText,
@@ -127,22 +129,22 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
                             print('Forgot Password pressed');
                           },
-                          child: Text(
+                          child: const Text(
                             'Forgot Password?',
                             style: TextStyle(
-                                color: const Color.fromARGB(255, 0, 0, 0)),
+                                color: Color.fromARGB(255, 0, 0, 0)),
                           ),
                         ),
                       ),
-                      SizedBox(height: 15.0),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 15.0),
+                      const SizedBox(height: 20.0),
                     ],
                   ),
                 ),

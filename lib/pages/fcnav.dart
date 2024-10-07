@@ -25,7 +25,7 @@ class _Fcnav extends State<Fcnav> {
   @override
   void initState() {
     homepage = const KecFcScreen();
-    order = const OrderPage();
+    order = OrderPage();
     profile = const ProfilePage();
     wallet = const WalletPage();
     pages = [homepage, order, wallet, profile];

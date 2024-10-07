@@ -6,63 +6,62 @@ class AuthMethod {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // SignUp User
-
   Future<String> signupUser({
     required String email,
     required String password,
     required String name,
   }) async {
-    String res = "Some error Occurred";
+    String res = "Some error occurred";
     try {
-      if (email.isNotEmpty ||
-          password.isNotEmpty ||
-          name.isNotEmpty) {
-        // register user in auth with email and password
+      if (email.isNotEmpty && password.isNotEmpty && name.isNotEmpty) {
+        // Register user in auth with email and password
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
-        // add user to your  firestore database
-        print(cred.user!.uid);
+
+        // Add user to your Firestore database
         await _firestore.collection("users").doc(cred.user!.uid).set({
           'name': name,
           'uid': cred.user!.uid,
           'email': email,
         });
 
-        res = "success";
+        res = "success"; // Indicate success
+      } else {
+        res = "Please fill all fields"; // Error message if fields are empty
       }
     } catch (err) {
-      return err.toString();
+      res = err.toString(); // Return error message
     }
-    return res;
+    return res; // Return result
   }
 
-  // logIn user
+  // LogIn User
   Future<String> loginUser({
     required String email,
     required String password,
   }) async {
-    String res = "Some error Occurred";
+    String res = "Some error occurred";
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
-        // logging in user with email and password
+      if (email.isNotEmpty && password.isNotEmpty) {
+        // Logging in user with email and password
         await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
-        res = "success";
+        res = "success"; // Indicate success
       } else {
-        res = "Please enter all the fields";
+        res = "Please enter all the fields"; // Error message if fields are empty
       }
     } catch (err) {
-      return err.toString();
+      res = err.toString(); // Return error message
     }
-    return res;
+    return res; // Return result
   }
 
-  // for sighout
-  signOut() async {
-    // await _auth.signOut();
+  // Sign Out
+  Future<void> signOut() async {
+    await _auth.signOut(); // Sign out user
   }
 }

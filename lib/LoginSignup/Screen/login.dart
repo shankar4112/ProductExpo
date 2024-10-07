@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:product_expo/LoginSignup/Widget/button.dart';
-import 'package:product_expo/PasswordForgot/forgot_password.dart';
-
-import 'package:product_expo/pages/ChooseOptionScreen.dart';
-
-
-
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+import '../Widget/button.dart';
+import '../../PasswordForgot/forgot_password.dart';
+import '../../pages/ChooseOptionScreen.dart';
 import '../Services/authentication.dart';
 import '../Widget/snackbar.dart';
 import '../Widget/text_field.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'signup.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,30 +29,66 @@ class _SignupScreenState extends State<LoginScreen> {
     passwordController.dispose();
   }
 
-// email and passowrd auth part
+  // Cart initialization function
+  Future<void> initializeUserCart() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      print("User is not logged in.");
+      return;
+    }
+
+    final cartRef = FirebaseFirestore.instance.collection('carts').doc(user.uid);
+
+    try {
+      // Check if the user's cart document exists
+      final cartSnapshot = await cartRef.get();
+
+      if (!cartSnapshot.exists) {
+        // If it doesn't exist, create a new cart document
+        await cartRef.set({
+          'items': [],  // Initialize with an empty item list
+          'created_at': FieldValue.serverTimestamp(),  // Optional timestamp
+        });
+        print("New cart document created for user: ${user.uid}");
+      } else {
+        print("Cart document already exists for user: ${user.uid}");
+      }
+    } catch (e) {
+      print("Error initializing cart for user: $e");
+    }
+  }
+
+  // Email and password auth part
   void loginUser() async {
     setState(() {
       isLoading = true;
     });
-    // signup user using our authmethod
+
     String res = await AuthMethod().loginUser(
         email: emailController.text, password: passwordController.text);
 
     if (res == "success") {
+      // Save login state
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+
+      // Initialize the user's cart
+      await initializeUserCart();
+
       setState(() {
         isLoading = false;
       });
-      //navigate to the home screen
+
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const ChooseOptionScreen (),
+          builder: (context) => const ChooseOptionScreen(),
         ),
       );
     } else {
       setState(() {
         isLoading = false;
       });
-      // show error
       showSnackBar(context, res);
     }
   }
@@ -63,7 +97,6 @@ class _SignupScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SafeArea(
           child: SizedBox(
@@ -82,11 +115,10 @@ class _SignupScreenState extends State<LoginScreen> {
             TextFieldInput(
               icon: Icons.lock,
               textEditingController: passwordController,
-              hintText: 'Enter your passord',
+              hintText: 'Enter your password',
               textInputType: TextInputType.text,
               isPass: true,
             ),
-            //  we call our forgot password below the login in button
             const ForgotPassword(),
             MyButtons(onTap: loginUser, text: "Log In"),
 
@@ -101,10 +133,6 @@ class _SignupScreenState extends State<LoginScreen> {
                 )
               ],
             ),
-            // for google login
-            
-        
-            // Don't have an account? got to signup screen
             Padding(
               padding: const EdgeInsets.only(top: 10, left: 100),
               child: Row(
@@ -130,27 +158,6 @@ class _SignupScreenState extends State<LoginScreen> {
           ],
         ),
       )),
-    );
-  }
-
-  Container socialIcon(image) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 32,
-        vertical: 15,
-      ),
-      decoration: BoxDecoration(
-        color: const Color(0xFFedf0f8),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.black45,
-          width: 2,
-        ),
-      ),
-      child: Image.network(
-        image,
-        height: 40,
-      ),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:product_expo/LoginSignup/Widget/button.dart';
+import '../Widget/button.dart';
 import '../Services/authentication.dart';
 import '../Widget/snackbar.dart';
 import '../Widget/text_field.dart';
@@ -32,29 +32,29 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       isLoading = true;
     });
-    // signup user using our authmethod
+    // signup user using our auth method
     String res = await AuthMethod().signupUser(
-        email: emailController.text,
-        password: passwordController.text,
-        name: nameController.text);
-    // if string return is success, user has been creaded and navigate to next screen other witse show error.
+      email: emailController.text,
+      password: passwordController.text,
+      name: nameController.text,
+    );
+
+    // if string returned is success, user has been created
     if (res == "success") {
-      setState(() {
-        isLoading = false;
-      });
-      //navigate to the next screen
+      // Navigate to the next screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const HomeScreen(),
         ),
       );
     } else {
-      setState(() {
-        isLoading = false;
-      });
       // show error
       showSnackBar(context, res);
     }
+    
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -63,55 +63,58 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-          child: SizedBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: height / 2.8,
-              child: Image.asset('images/signup.jpeg'),
-            ),
-            TextFieldInput(
+        child: SizedBox(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: height / 2.8,
+                child: Image.asset('images/signup.jpeg'),
+              ),
+              TextFieldInput(
                 icon: Icons.person,
                 textEditingController: nameController,
                 hintText: 'Enter your name',
-                textInputType: TextInputType.text),
-            TextFieldInput(
+                textInputType: TextInputType.text,
+              ),
+              TextFieldInput(
                 icon: Icons.email,
                 textEditingController: emailController,
                 hintText: 'Enter your email',
-                textInputType: TextInputType.text),
-            TextFieldInput(
-              icon: Icons.lock,
-              textEditingController: passwordController,
-              hintText: 'Enter your passord',
-              textInputType: TextInputType.text,
-              isPass: true,
-            ),
-            MyButtons(onTap: signupUser, text: "Sign Up"),
-            const SizedBox(height: 50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Already have an account?"),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    " Login",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            )
-          ],
+                textInputType: TextInputType.text,
+              ),
+              TextFieldInput(
+                icon: Icons.lock,
+                textEditingController: passwordController,
+                hintText: 'Enter your password',
+                textInputType: TextInputType.text,
+                isPass: true,
+              ),
+              MyButtons(onTap: signupUser, text: "Sign Up"),
+              const SizedBox(height: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Already have an account?"),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      " Login",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

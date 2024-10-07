@@ -1,19 +1,22 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:kecapp/pages/login.dart'; // Import LoginPage here
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'pages/intro.dart'; // Import the Onboarding screen
-import 'LoginSignup/Screen/login.dart';
-// import 'pages
-//
-//
-///bottom_nav.dart'; // Import your BottomNav or other main screen
-import 'pages/ChooseOptionScreen.dart';
+import 'LoginSignup/Screen/login.dart'; // Import the LoginScreen
+import 'pages/ChooseOptionScreen.dart'; // Import the Home Screen (ChooseOptionScreen)
+
+const String seenOnboardingKey = 'seenOnboarding'; // Constant for onboarding key
+const String isLoggedInKey = 'isLoggedIn'; // Constant for login key
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
+  try {
+    await Firebase.initializeApp(); // Initialize Firebase
+  } catch (e) {
+    // Handle any initialization errors here
+    print("Firebase initialization error: $e");
+  }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -24,21 +27,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _seenOnboarding = false; // Initialize as false
-
-  @override
-  void initState() {
-    super.initState();
-    _checkOnboardingStatus(); // Check the onboarding status when app starts
-  }
-
-  Future<void> _checkOnboardingStatus() async {
+  Future<Map<String, bool>> _checkOnboardingAndLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool seen =
-        prefs.getBool('seenOnboarding') ?? false; // Get the saved status
-    setState(() {
-      _seenOnboarding = seen; // Update the state based on the flag
-    });
+    bool seenOnboarding = prefs.getBool(seenOnboardingKey) ?? false;
+    bool loggedIn = prefs.getBool(isLoggedInKey) ?? false;
+    return {
+      'seenOnboarding': seenOnboarding,
+      'isLoggedIn': loggedIn,
+    };
   }
 
   @override
@@ -50,12 +46,35 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
         fontFamily: 'Montserrat',
       ),
-      // Show either the onboarding screen (if not seen) or login/main screen
-      home: _seenOnboarding ? LoginScreen() : OnboardingScreen(),
+      home: FutureBuilder<Map<String, bool>>(
+        future: _checkOnboardingAndLoginStatus(), // Wait for the onboarding and login status
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // While waiting for data, show a loading indicator
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            // Handle errors
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+
+          // Determine the initial screen based on onboarding and login status
+          bool seenOnboarding = snapshot.data?['seenOnboarding'] ?? false;
+          bool isLoggedIn = snapshot.data?['isLoggedIn'] ?? false;
+
+          if (!seenOnboarding) {
+            return const OnboardingScreen(); // Show onboarding if not seen
+          } else if (isLoggedIn) {
+            return const ChooseOptionScreen(); // Show home screen if logged in
+          } else {
+            return const LoginScreen(); // Show login screen if not logged in
+          }
+        },
+      ),
       routes: {
-        '/login': (context) => LoginScreen(), // Add the login page route
-        '/chooseOption': (context) =>
-            ChooseOptionScreen(), // Add the bottom navigation or main page route
+        '/login': (context) => const LoginScreen(), // Route to login page
+        '/chooseOption': (context) => const ChooseOptionScreen(), // Route to home screen
       },
     );
   }

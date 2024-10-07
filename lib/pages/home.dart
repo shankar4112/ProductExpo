@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // Model class for cart items
@@ -50,6 +52,17 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Stream<List<String>> fetchFavoriteItems() {
+  final userId = FirebaseAuth.instance.currentUser?.uid; // Use the authenticated user's ID
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId)
+      .collection('favorites')
+      .snapshots()
+      .map((snapshot) {
+    return snapshot.docs.map((doc) => doc['title'] as String).toList();
+  });}
+
   void toggleCartVisibility() {
     setState(() {
       isCartVisible = !isCartVisible;
@@ -64,21 +77,44 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void addToFavorites(String title) {
-    setState(() {
-      if (!favoriteItems.contains(title)) {
-        favoriteItems.add(title);
-        favoriteCount++; // Increase favorite count
-      }
-    });
-  }
+  void addToFavorites(String title) async {
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId != null) {
+    DocumentReference favoritesRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('favorites')
+        .doc(title); // Using title as the document ID for simplicity
 
-  void removeFromFavorites(String title) {
+    // Add to favorites
+    await favoritesRef.set({
+      'title': title,
+    });
+
+    setState(() {
+      favoriteItems.add(title);
+      favoriteCount++; // Increase favorite count
+    });
+  }}
+
+
+  void removeFromFavorites(String title) async {
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId != null) {
+    DocumentReference favoritesRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('favorites')
+        .doc(title); // Using title as the document ID
+
+    // Remove from favorites
+    await favoritesRef.delete();
+
     setState(() {
       favoriteItems.remove(title);
       favoriteCount--; // Decrease favorite count
     });
-  }
+  }}
 
   void navigateToFavorites() {
     Navigator.push(
@@ -341,58 +377,67 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildCartView() {
+    Widget buildCartView() {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: 350, // Increased height to accommodate the button
-        color: Colors.white,
+        height: 400, // Adjusted height to accommodate the button and padding
+        padding: const EdgeInsets.all(16.0), // Added padding
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)), // Rounded corners
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2), // Subtle shadow effect
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: const Offset(0, -3), // Changes position of shadow
+            ),
+          ],
+        ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Your Cart',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
+            const SizedBox(height: 10), // Space between title and list
             Expanded(
               child: ListView.builder(
                 itemCount: cartItems.length,
                 itemBuilder: (context, index) {
                   final item = cartItems[index];
-                  return ListTile(
-                    title: Text(item.title),
-                    subtitle: Row(
-                      children: [
-                        // Decrease quantity button
-                        IconButton(
-                          icon: const Icon(Icons.remove_circle_outline),
-                          onPressed: () {
-                            removeFromCart(item.title);
-                          },
-                        ),
-                        // Display current quantity
-                        Text('Quantity: ${item.quantity}'),
-                        // Increase quantity button
-                        IconButton(
-                          icon: const Icon(Icons.add_circle_outline),
-                          onPressed: () {
-                            addToCart(item.title, item.price);
-                          },
-                        ),
-                      ],
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: ListTile(
+                      title: Text(item.title),
+                      subtitle: Text('Quantity: ${item.quantity}'),
+                      trailing: Text('Rs.${item.price * item.quantity}'),
+                      leading: IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {
+                          removeFromCart(item.title);
+                        },
+                      ),
                     ),
-                    trailing: Text('Rs.${item.price * item.quantity}'),
                   );
                 },
               ),
             ),
-            // Proceed to Checkout button
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                // Handle the checkout process here
-                // For example, navigate to a checkout page or show a confirmation dialog
-                proceedToCheckout();
+                // Add functionality to proceed to checkout
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Proceeding to checkout...')),
+                );
               },
-              child: const Text('Proceed to Checkout'),
+              child: const Text('Checkout'),
             ),
           ],
         ),
@@ -400,53 +445,63 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-// Function to handle checkout
-  void proceedToCheckout() {
-    // You can implement your checkout logic here
-    // For example, show a dialog or navigate to another screen
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Checkout'),
-          content: const Text('Proceeding to checkout...'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Widget buildFavoritesView() {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: 300,
-        color: Colors.white,
+        height: 400, // Adjusted height to accommodate the button and padding
+        padding: const EdgeInsets.all(16.0), // Added padding
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)), // Rounded corners
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2), // Subtle shadow effect
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: const Offset(0, -3), // Changes position of shadow
+            ),
+          ],
+        ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Your Favorites',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
+            const SizedBox(height: 10), // Space between title and list
             Expanded(
-              child: ListView.builder(
-                itemCount: favoriteItems.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(favoriteItems[index]),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.remove_circle, color: Colors.red),
-                      onPressed: () {
-                        removeFromFavorites(favoriteItems[index]);
-                      },
-                    ),
+              child: StreamBuilder<List<String>>(
+                stream: fetchFavoriteItems(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  final favorites = snapshot.data ?? [];
+                  if (favorites.isEmpty) {
+                    return const Center(child: Text('No favorites added.'));
+                  }
+                  return ListView.builder(
+                    itemCount: favorites.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(favorites[index]),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.remove),
+                          onPressed: () {
+                            removeFromFavorites(favorites[index]);
+                          },
+                        ),
+                      );
+                    },
                   );
                 },
               ),
@@ -458,7 +513,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// Page to display favorite items
 class FavoritesPage extends StatelessWidget {
   final List<String> favoriteItems;
 
@@ -467,17 +521,17 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Favorite Items')),
-      body: favoriteItems.isEmpty
-          ? const Center(child: Text('No favorite items yet.'))
-          : ListView.builder(
-              itemCount: favoriteItems.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(favoriteItems[index]),
-                );
-              },
-            ),
+      appBar: AppBar(
+        title: const Text('Favorites'),
+      ),
+      body: ListView.builder(
+        itemCount: favoriteItems.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(favoriteItems[index]),
+          );
+        },
+      ),
     );
   }
 }
