@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 
 class OrderPage extends StatelessWidget {
   // Removed const from constructor
-  OrderPage({Key? key}) : super(key: key);
+  const OrderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Orders'),
+        title: const Text('Your Orders'),
       ),
       body: FutureBuilder<QuerySnapshot>(
         future: fetchOrders(), // Function to fetch orders
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error fetching orders'));
+            return const Center(child: Text('Error fetching orders'));
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No orders found'));
+            return const Center(child: Text('No orders found'));
           }
 
           final orders = snapshot.data!.docs;
