@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';  // Ensure correct import
+import 'package:flutter/material.dart'; // Ensure correct import
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kecapp/HomePage/home_provider.dart';
@@ -9,87 +9,97 @@ class ProductList extends StatelessWidget {
   final List<Product> products = [
     Product(
       id: '1',
-      name: 'Snacks',
-      price: 2.99,
-      description: 'Tasty and crunchy snacks.',
-      imageUrl: 'https://via.placeholder.com/80',
+      name: 'Dairy Milk',
+      price: 50,
+      description: 'A little bittersweet, a lot of bliss',
+      imageUrl:
+          'https://img.freepik.com/premium-photo/pile-different-kinds-chocolates-with-word-chocolate-bottom_1202211-4471.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
     Product(
       id: '2',
-      name: 'Xerox',
-      price: 0.10,
-      description: 'Affordable photocopying services.',
-      imageUrl: 'https://via.placeholder.com/80',
+      name: 'Lays',
+      price: 10,
+      description: 'Tasty and crunchy Lays.',
+      imageUrl:
+          'https://img.freepik.com/premium-photo/lays-classic-potato-chips-bag-snack-food-packaging-popular-potato-chips-brand-food-photography_1301911-649.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
     Product(
       id: '3',
-      name: 'Stationary',
-      price: 1.50,
-      description: 'Quality stationary items for your needs.',
-      imageUrl: 'https://via.placeholder.com/80',
+      name: 'Mango Juice (Fresh)',
+      price: 40,
+      description: 'Pure sunshine in every sip..',
+      imageUrl:
+          'https://img.freepik.com/premium-photo/mango-juice_1132842-16066.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
     Product(
       id: '4',
       name: 'Water Bottle',
-      price: 5.00,
+      price: 20.00,
       description: 'Durable and eco-friendly water bottle.',
-      imageUrl: 'https://via.placeholder.com/80',
+      imageUrl:
+          'https://img.freepik.com/premium-photo/water-bottel_534373-6143.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
     Product(
       id: '5',
       name: 'Notebooks',
-      price: 3.50,
+      price: 40,
       description: 'Perfect for all your writing needs.',
-      imageUrl: 'https://via.placeholder.com/80',
+      imageUrl:
+          'https://img.freepik.com/premium-psd/colorful-notebooks-stacked-back-school-supplies-isolated-transparent-background_1230402-488.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
     Product(
       id: '6',
       name: 'Pens',
-      price: 1.20,
+      price: 10,
       description: 'Smooth-writing pens for every occasion.',
-      imageUrl: 'https://via.placeholder.com/80',
+      imageUrl:
+          'https://img.freepik.com/premium-photo/box-pens-with-word-pen-it_1063827-13688.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
     Product(
       id: '7',
       name: 'Backpack',
-      price: 25.99,
+      price: 2499,
       description: 'Spacious and stylish backpack.',
-      imageUrl: 'https://via.placeholder.com/80',
+      imageUrl:
+          'https://img.freepik.com/premium-photo/blue-backpack-white-background_1235831-290791.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
     Product(
       id: '8',
       name: 'Calculator',
-      price: 12.49,
+      price: 499,
       description: 'Reliable calculator for students.',
-      imageUrl: 'https://via.placeholder.com/80',
+      imageUrl:
+          'https://img.freepik.com/free-photo/calculator-papers_23-2148148303.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
     Product(
       id: '9',
       name: 'Laptop Stand',
-      price: 19.99,
+      price: 299,
       description: 'Ergonomic laptop stand for comfortable working.',
-      imageUrl: 'https://via.placeholder.com/80',
+      imageUrl:
+          'https://img.freepik.com/premium-photo/standing-laptop-holder-set-up-with-notebook-desk_928017-314.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
     Product(
       id: '10',
       name: 'Headphones',
-      price: 29.99,
+      price: 199,
       description: 'Noise-cancelling headphones for music lovers.',
-      imageUrl: 'https://via.placeholder.com/80',
+      imageUrl:
+          'https://img.freepik.com/premium-photo/still-life-with-minimal-earbuds_52683-166584.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
       quantity: 1,
     ),
   ];
 
-ProductList({super.key});
+  ProductList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -132,11 +142,12 @@ class ProductCard extends StatelessWidget {
                     children: [
                       Text(
                         product.name,
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '\$${(product.price * product.quantity).toStringAsFixed(2)}', // Use quantity for total price
+                        '\$0${(product.price * product.quantity).toStringAsFixed(2)}', // Use quantity for total price
                         style: const TextStyle(color: Colors.green),
                       ),
                       const SizedBox(height: 4),
@@ -170,7 +181,6 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-
 // AddToCartWidget
 class AddToCartWidget extends StatelessWidget {
   final Product product;
@@ -193,7 +203,7 @@ class AddToCartWidget extends StatelessWidget {
         // If the product exists, update the quantity
         DocumentSnapshot existingProduct = cartItems.docs.first;
         int currentQuantity = existingProduct['quantity'];
-        
+
         // Increment quantity and update Firestore
         await FirebaseFirestore.instance
             .collection('users')
@@ -202,12 +212,12 @@ class AddToCartWidget extends StatelessWidget {
             .doc(existingProduct.id)
             .update({
           'quantity': currentQuantity + 1,
-          'totalPrice': product.price * (currentQuantity + 1),  // Update total price in Firestore
+          'totalPrice': product.price *
+              (currentQuantity + 1), // Update total price in Firestore
         });
 
         // Update local product quantity
         product.quantity = currentQuantity + 1;
-
       } else {
         // If the product does not exist, add it to the cart
         await FirebaseFirestore.instance
@@ -220,7 +230,7 @@ class AddToCartWidget extends StatelessWidget {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'quantity': 1,
-          'totalPrice': product.price,  // Initial price = unit price
+          'totalPrice': product.price, // Initial price = unit price
         });
 
         // Set initial quantity locally
@@ -235,7 +245,7 @@ class AddToCartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        addToFirestore(product);  // Update Firestore and local quantity
+        addToFirestore(product); // Update Firestore and local quantity
 
         // Show a message indicating the product has been added
         ScaffoldMessenger.of(context).showSnackBar(
@@ -252,12 +262,13 @@ class FavoritesWidget extends StatelessWidget {
   final Product product;
 
   const FavoritesWidget({super.key, required this.product});
-  
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        Provider.of<HomeProvider>(context, listen: false).addToFavorites(product);
+        Provider.of<HomeProvider>(context, listen: false)
+            .addToFavorites(product);
         // Add to favorites action
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Added to Favorites')),

@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => HomeProvider(),
+      create: (_) => HomeProvider(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('KECGo!'),

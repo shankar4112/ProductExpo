@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SnacksPage extends StatefulWidget {
@@ -6,25 +8,117 @@ class SnacksPage extends StatefulWidget {
 }
 
 class _SnacksPageState extends State<SnacksPage> {
-  // A list of snacks with names, images, and prices
-  final List<Map<String, String>> snacks = [
-    {'name': 'Chips', 'image': 'assets/chips.png', 'price': '2.99'},
-    {'name': 'Cookies', 'image': 'assets/cookies.png', 'price': '3.49'},
-    {'name': 'Popcorn', 'image': 'assets/popcorn.png', 'price': '1.99'},
-    {'name': 'Cake', 'image': 'assets/cake.png', 'price': '2.79'},
-    {'name': 'Candy', 'image': 'assets/candy.png', 'price': '1.49'},
-    {
-      'name': 'Chocolate',
-      'image': 'assets/dark_chocolate.png',
-      'price': '4.99'
-    },
-    {'name': 'Cream Bun', 'image': 'assets/creambun.png', 'price': '3.19'},
-    {'name': 'Cup Cake', 'image': 'assets/cupcake.png', 'price': '2.49'},
-  ];
+  // A list of snacks with the new structure
+  final List<Map<String, dynamic>> snacks = [
+  {
+    'description': 'Tasty and crunchy chips.',
+    'imageUrl': 'https://via.placeholder.com/80',
+    'name': 'Chips',
+    'price': 2.99,
+    'quantity': 1, // Default quantity can be 1
+    'totalPrice': 2.99,
+  },
+  {
+    'description': 'Freshly baked cookies.',
+    'imageUrl': 'https://via.placeholder.com/80',
+    'name': 'Cookies',
+    'price': 3.49,
+    'quantity': 1,
+    'totalPrice': 3.49,
+  },
+  {
+    'description': 'Refreshing soda.',
+    'imageUrl': 'https://via.placeholder.com/80',
+    'name': 'Soda',
+    'price': 1.99,
+    'quantity': 1,
+    'totalPrice': 1.99,
+  },
+  {
+    'description': 'Delicious cake.',
+    'imageUrl': 'https://via.placeholder.com/80',
+    'name': 'Cake',
+    'price': 2.79,
+    'quantity': 1,
+    'totalPrice': 2.79,
+  },
+  {
+    'description': 'Sweet and colorful candy.',
+    'imageUrl': 'https://via.placeholder.com/80',
+    'name': 'Candy',
+    'price': 1.49,
+    'quantity': 1,
+    'totalPrice': 1.49,
+  },
+  {
+    'description': 'Rich dark chocolate.',
+    'imageUrl': 'https://via.placeholder.com/80',
+    'name': 'Chocolate',
+    'price': 4.99,
+    'quantity': 1,
+    'totalPrice': 4.99,
+  },
+  {
+    'description': 'Soft and creamy cream bun.',
+    'imageUrl': 'https://via.placeholder.com/80',
+    'name': 'Cream Bun',
+    'price': 3.19,
+    'quantity': 1,
+    'totalPrice': 3.19,
+  },
+  {
+    'description': 'Moist and delightful cupcake.',
+    'imageUrl': 'https://via.placeholder.com/80',
+    'name': 'Cup Cake',
+    'price': 2.49,
+    'quantity': 1,
+    'totalPrice': 2.49,
+  },
+];
+
 
   // Track favorites and cart items
   Set<String> favorites = {};
   Set<String> cart = {};
+
+  // Firebase instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // Function to add item to Firestore cart collection
+  Future<void> _addToCart(Map<String, dynamic> snack) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        String uid = user.uid;
+
+        // Add snack to the user's cart collection
+        await _firestore.collection('users').doc(uid).collection('carts').add({
+          'name': snack['name'],
+          'description': snack['description'],
+          'imageUrl': snack['imageUrl'],
+          'price': snack['price'],
+          'quantity': snack['quantity'],
+          'totalPrice': snack['totalPrice'],
+          'added_at': Timestamp.now(),
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${snack['name']} added to cart!')),
+        );
+      } else {
+        // Handle unauthenticated user case
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please log in to add items to the cart')),
+        );
+      }
+    } catch (e) {
+      print('Error adding to cart: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to add ${snack['name']} to cart')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +131,15 @@ class _SnacksPageState extends State<SnacksPage> {
         itemBuilder: (context, index) {
           final snack = snacks[index];
           final snackName = snack['name'];
-          final snackImage = snack['image'];
+          final snackImageUrl = snack['imageUrl'];
+          final snackDescription = snack['description'];
           final snackPrice = snack['price'];
 
           return Card(
             child: ListTile(
-              leading: Image.asset(snackImage!, width: 50, height: 50),
-              title: Text('$snackName - \$$snackPrice'),
+              leading: Image.network(snackImageUrl, width: 50, height: 50),
+              title: Text('$snackName - \Rs.${snackPrice.toStringAsFixed(2)}'),
+              subtitle: Text(snackDescription),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -72,10 +168,11 @@ class _SnacksPageState extends State<SnacksPage> {
                     ),
                     onPressed: () {
                       setState(() {
-                        if (cart.contains(snackName)) {
-                          cart.remove(snackName);
-                        } else {
+                        if (!cart.contains(snackName)) {
                           cart.add(snackName!);
+                          _addToCart(snack); // Add to Firestore
+                        } else {
+                          cart.remove(snackName);
                         }
                       });
                     },
