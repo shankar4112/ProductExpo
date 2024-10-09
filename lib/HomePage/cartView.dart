@@ -1,16 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'home_provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-class CartView extends StatelessWidget {
+class CartView extends StatefulWidget {
   const CartView({super.key});
+
+  @override
+  _CartViewState createState() => _CartViewState();
+}
+
+class _CartViewState extends State<CartView> {
+  late Razorpay _razorpay;
+
+  @override
+  void initState() {
+    super.initState();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    _razorpay.clear();
+    super.dispose();
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Handle successful payment here
+    print("Payment successful: ${response.paymentId}");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Payment successful!')),
+    );
+
+    // Proceed with checkout logic
+    final provider = Provider.of<HomeProvider>(context, listen: false);
+    provider.checkout(); // Clear the cart or handle checkout process
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Handle payment failure here
+    print("Payment failed: ${response.message}");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Payment failed: ${response.message}')),
+    );
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Handle external wallet payment here
+    print("External wallet selected: ${response.walletName}");
+  }
+
+  void _startPayment(double amount) {
+    var options = {
+      'key': 'rzp_test_4rdgre6savrrmw', // Replace with your Razorpay key
+      'amount': 1, // Amount in paise
+      'currency': 'INR',
+      'name': 'KECGo',
+      'description': 'Order Payment',
+      'prefill': {
+        'contact': '1234567890',
+        'email': 'test@example.com',
+      },
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HomeProvider>(context);
 
     return Scaffold(
-      
       body: provider.cartItems.isEmpty
           ? const Center(
               child: Text(
@@ -45,11 +112,11 @@ class CartView extends StatelessWidget {
                                 if (item.quantity > 1) {
                                   provider.updateItemQuantity(index, item.quantity - 1);
                                 } else {
-                                  provider.removeFromCart(index); // Remove if quantity is 0
+                                  provider.removeFromCart(index);
                                 }
                               },
                             ),
-                            Text('${item.quantity}'), // Display the quantity
+                            Text('${item.quantity}'),
                             IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () {
@@ -73,18 +140,10 @@ class CartView extends StatelessWidget {
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       ElevatedButton(
-                        onPressed: () async {
-                          // Perform checkout
-                          await provider.checkout();
-                          // Show confirmation message or navigate to orders page
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Checkout successful!'),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                          // Optionally navigate to orders page
-                          // Navigator.pushReplacementNamed(context, '/orders');
+                        onPressed: () {
+                          double totalAmount = provider.cartItems.fold<double>(
+                              0, (sum, item) => sum + (item.price * item.quantity));
+                          _startPayment(totalAmount); // Call Razorpay payment function
                         },
                         child: const Text('Checkout'),
                       ),

@@ -7,6 +7,7 @@ import 'CartView.dart'; // Import CartView
 import 'FavoritesView.dart'; // Import FavoritesView
 import 'productList.dart'; // Import ProductList
 import 'category_page.dart'; // Import CategoryPage
+import 'Snacks.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -85,13 +86,22 @@ class CategoryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Navigate to the respective category page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CategoryPage(label: label)),
-        );
+        if (label == 'Snacks') {
+          // Navigate to SnacksPage
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SnacksPage()), // Link SnacksPage here
+          );
+        } else {
+          // Navigate to the respective category page for other categories
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CategoryPage(label: label)),
+          );
+        }
       },
       child: Text(label),
     );
   }
 }
+
