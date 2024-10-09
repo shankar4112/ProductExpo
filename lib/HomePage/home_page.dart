@@ -8,6 +8,7 @@ import 'FavoritesView.dart'; // Import FavoritesView
 import 'productList.dart'; // Import ProductList
 import 'category_page.dart'; // Import CategoryPage
 import 'Snacks.dart';
+import 'Photocopy.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -52,7 +53,7 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       CategoryButton(label: 'Snacks'),
-                      CategoryButton(label: 'Xerox'),
+                      CategoryButton(label: 'Photocopy'),
                       CategoryButton(label: 'Stationery'),
                     ],
                   ),
@@ -91,6 +92,11 @@ class CategoryButton extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => SnacksPage()), // Link SnacksPage here
+          );
+        } else if(label == 'Photocopy') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PhotocopyPage()),
           );
         } else {
           // Navigate to the respective category page for other categories
