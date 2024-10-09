@@ -12,7 +12,7 @@ class _SnacksPageState extends State<SnacksPage> {
   final List<Map<String, dynamic>> snacks = [
   {
     'description': 'Tasty and crunchy chips.',
-    'imageUrl': 'https://via.placeholder.com/80',
+    'imageUrl': 'https://img.freepik.com/free-photo/fried-potatoes-french-fries-isolated-white-background_123827-26401.jpg?size=626&ext=jpg&ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
     'name': 'Chips',
     'price': 2.99,
     'quantity': 1, // Default quantity can be 1
@@ -20,7 +20,7 @@ class _SnacksPageState extends State<SnacksPage> {
   },
   {
     'description': 'Freshly baked cookies.',
-    'imageUrl': 'https://via.placeholder.com/80',
+    'imageUrl': 'https://img.freepik.com/premium-photo/stack-chocolate-chip-cookies-with-chocolate-chips-top_971034-48185.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
     'name': 'Cookies',
     'price': 3.49,
     'quantity': 1,
@@ -28,7 +28,7 @@ class _SnacksPageState extends State<SnacksPage> {
   },
   {
     'description': 'Refreshing soda.',
-    'imageUrl': 'https://via.placeholder.com/80',
+    'imageUrl': 'https://img.freepik.com/premium-photo/refreshing-green-can-with-lime-slices-ice_825767-55207.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
     'name': 'Soda',
     'price': 1.99,
     'quantity': 1,
@@ -36,7 +36,7 @@ class _SnacksPageState extends State<SnacksPage> {
   },
   {
     'description': 'Delicious cake.',
-    'imageUrl': 'https://via.placeholder.com/80',
+    'imageUrl': 'https://img.freepik.com/premium-photo/refreshing-green-can-with-lime-slices-ice_825767-55207.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
     'name': 'Cake',
     'price': 2.79,
     'quantity': 1,
@@ -44,7 +44,7 @@ class _SnacksPageState extends State<SnacksPage> {
   },
   {
     'description': 'Sweet and colorful candy.',
-    'imageUrl': 'https://via.placeholder.com/80',
+    'imageUrl': 'https://img.freepik.com/premium-photo/slice-cake-dark-background_1271802-17251.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
     'name': 'Candy',
     'price': 1.49,
     'quantity': 1,

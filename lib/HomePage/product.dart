@@ -9,6 +9,6 @@ class Product {
     required this.name,
     required this.price,
     required this.description,
-    required this.imageUrl,
+    required this.imageUrl, required String id,
   });
 }
