@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 
 class PhotocopyPage extends StatefulWidget {
+  const PhotocopyPage({super.key});
+
   @override
   _PhotocopyPageState createState() => _PhotocopyPageState();
 }
@@ -26,7 +28,7 @@ class _PhotocopyPageState extends State<PhotocopyPage> {
         });
       } else {
         // User canceled the picker
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('File selection canceled.'),
         ));
       }
@@ -42,35 +44,35 @@ class _PhotocopyPageState extends State<PhotocopyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Photocopy Service'),
+        title: const Text('Photocopy Service'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Upload File for Photocopy',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             selectedFile == null
-                ? Text('No file selected.')
+                ? const Text('No file selected.')
                 : Text('Selected file: ${selectedFile!.path.split('/').last}'),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: pickFile,
-              child: Text('Choose File'),
+              child: const Text('Choose File'),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             TextField(
               controller: quantityController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Quantity',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Implement the logic to process the file and quantity
@@ -82,12 +84,12 @@ class _PhotocopyPageState extends State<PhotocopyPage> {
                         'File: ${selectedFile!.path.split('/').last}, Quantity: $quantity'),
                   ));
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('Please select a file and enter quantity'),
                   ));
                 }
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         ),

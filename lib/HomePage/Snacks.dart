@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SnacksPage extends StatefulWidget {
+  const SnacksPage({super.key});
+
   @override
   _SnacksPageState createState() => _SnacksPageState();
 }
@@ -109,7 +111,7 @@ class _SnacksPageState extends State<SnacksPage> {
       } else {
         // Handle unauthenticated user case
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please log in to add items to the cart')),
+          const SnackBar(content: Text('Please log in to add items to the cart')),
         );
       }
     } catch (e) {
@@ -124,7 +126,7 @@ class _SnacksPageState extends State<SnacksPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Snacks'),
+        title: const Text('Snacks'),
       ),
       body: ListView.builder(
         itemCount: snacks.length,
@@ -138,7 +140,7 @@ class _SnacksPageState extends State<SnacksPage> {
           return Card(
             child: ListTile(
               leading: Image.network(snackImageUrl, width: 50, height: 50),
-              title: Text('$snackName - \Rs.${snackPrice.toStringAsFixed(2)}'),
+              title: Text('$snackName - Rs.${snackPrice.toStringAsFixed(2)}'),
               subtitle: Text(snackDescription),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
