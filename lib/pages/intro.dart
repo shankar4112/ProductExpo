@@ -28,7 +28,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
             children: [
               _buildPageContent(
-                image: 'assets/self-checkout.png',
+                image: 'assets/Order ahead-rafiki.png',
                 title: "Order from the Menu",
                 content:
                     "Select and order food or items from our menu in just a few taps!",
