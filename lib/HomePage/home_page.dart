@@ -91,12 +91,12 @@ class CategoryButton extends StatelessWidget {
           // Navigate to SnacksPage
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SnacksPage()), // Link SnacksPage here
+            MaterialPageRoute(builder: (context) => const SnacksPage()), // Link SnacksPage here
           );
         } else if(label == 'Photocopy') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PhotocopyPage()),
+            MaterialPageRoute(builder: (context) => const PhotocopyPage()),
           );
         } else {
           // Navigate to the respective category page for other categories

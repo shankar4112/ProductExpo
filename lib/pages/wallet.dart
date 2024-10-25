@@ -6,7 +6,7 @@ class WalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('Wallet Page')),
+      body: Center(child: Text('trending Page')),
     );
   }
 }

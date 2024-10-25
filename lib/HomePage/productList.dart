@@ -6,113 +6,48 @@ import 'package:provider/provider.dart';
 import 'package:kecapp/HomePage/product_model.dart'; // Import the shared Product model
 
 class ProductList extends StatelessWidget {
-  final List<Product> products = [
-    Product(
-      id: '1',
-      name: 'Dairy Milk',
-      price: 50,
-      description: 'A little bittersweet, a lot of bliss',
-      imageUrl:
-          'https://img.freepik.com/premium-photo/pile-different-kinds-chocolates-with-word-chocolate-bottom_1202211-4471.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-    Product(
-      id: '2',
-      name: 'Lays',
-      price: 10,
-      description: 'Tasty and crunchy Lays.',
-      imageUrl:
-          'https://img.freepik.com/premium-photo/lays-classic-potato-chips-bag-snack-food-packaging-popular-potato-chips-brand-food-photography_1301911-649.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-    Product(
-      id: '3',
-      name: 'Mango Juice (Fresh)',
-      price: 40,
-      description: 'Pure sunshine in every sip..',
-      imageUrl:
-          'https://img.freepik.com/premium-photo/mango-juice_1132842-16066.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-    Product(
-      id: '4',
-      name: 'Water Bottle',
-      price: 20.00,
-      description: 'Durable and eco-friendly water bottle.',
-      imageUrl:
-          'https://img.freepik.com/premium-photo/water-bottel_534373-6143.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-    Product(
-      id: '5',
-      name: 'Notebooks',
-      price: 40,
-      description: 'Perfect for all your writing needs.',
-      imageUrl:
-          'https://img.freepik.com/premium-psd/colorful-notebooks-stacked-back-school-supplies-isolated-transparent-background_1230402-488.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-    Product(
-      id: '6',
-      name: 'Pens',
-      price: 10,
-      description: 'Smooth-writing pens for every occasion.',
-      imageUrl:
-          'https://img.freepik.com/premium-photo/box-pens-with-word-pen-it_1063827-13688.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-    Product(
-      id: '7',
-      name: 'Backpack',
-      price: 2499,
-      description: 'Spacious and stylish backpack.',
-      imageUrl:
-          'https://img.freepik.com/premium-photo/blue-backpack-white-background_1235831-290791.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-    Product(
-      id: '8',
-      name: 'Calculator',
-      price: 499,
-      description: 'Reliable calculator for students.',
-      imageUrl:
-          'https://img.freepik.com/free-photo/calculator-papers_23-2148148303.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-    Product(
-      id: '9',
-      name: 'Laptop Stand',
-      price: 299,
-      description: 'Ergonomic laptop stand for comfortable working.',
-      imageUrl:
-          'https://img.freepik.com/premium-photo/standing-laptop-holder-set-up-with-notebook-desk_928017-314.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-    Product(
-      id: '10',
-      name: 'Headphones',
-      price: 199,
-      description: 'Noise-cancelling headphones for music lovers.',
-      imageUrl:
-          'https://img.freepik.com/premium-photo/still-life-with-minimal-earbuds_52683-166584.jpg?ga=GA1.1.1308315130.1728445011&semt=ais_hybrid',
-      quantity: 1,
-    ),
-  ];
-
-  ProductList({super.key});
+  const ProductList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return ProductCard(product: product);
+    // Using StreamBuilder to fetch products dynamically from Firestore
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('products').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return const Center(child: Text('Error loading products'));
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text('No products available'));
+        }
+
+        final List<Product> products = snapshot.data!.docs.map((doc) {
+          return Product(
+            id: doc.id,
+            name: doc['name'],
+            price: doc['price'].toDouble(),
+            description: doc['description'],
+            imageUrl: doc['imageUrl'],
+            quantity: doc['quantity'], // default or stored quantity
+          );
+        }).toList();
+
+        return ListView.builder(
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final product = products[index];
+            return ProductCard(product: product);
+          },
+        );
       },
     );
   }
 }
-
 class ProductCard extends StatelessWidget {
   final Product product;
 
